@@ -71,6 +71,16 @@ public partial class MainViewModel : ObservableObject
         });
     }
 
+    [RelayCommand]
+    private static void OpenReleasesPage()
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = "https://github.com/aivarmobil-oss/FreeSteamGames/releases/latest",
+            UseShellExecute = true
+        });
+    }
+
     public void ShowUpdateBanner(string message)
     {
         UpdateBannerMessage = message;

@@ -12,6 +12,33 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+            <!-- Дизайн-токены: тёмный холодный сланец + мятно-изумрудный акцент "забрал бесплатно" -->
+            <Color x:Key="ColorBg">#14171C</Color>
+            <Color x:Key="ColorSurface">#1D2129</Color>
+            <Color x:Key="ColorSurfaceHover">#252B35</Color>
+            <Color x:Key="ColorAccent">#3ED598</Color>
+            <Color x:Key="ColorAccentDim">#2B6E52</Color>
+            <Color x:Key="ColorWarning">#E8A33D</Color>
+            <Color x:Key="ColorWarningSurface">#3D3319</Color>
+            <Color x:Key="ColorWarningBorder">#8A6D1F</Color>
+            <Color x:Key="ColorTextPrimary">#F3F5F7</Color>
+            <Color x:Key="ColorTextMuted">#9AA3AF</Color>
+
+            <SolidColorBrush x:Key="BgBrush" Color="{StaticResource ColorBg}" />
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource ColorSurface}" />
+            <SolidColorBrush x:Key="SurfaceHoverBrush" Color="{StaticResource ColorSurfaceHover}" />
+            <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource ColorAccent}" />
+            <SolidColorBrush x:Key="AccentDimBrush" Color="{StaticResource ColorAccentDim}" />
+            <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource ColorWarning}" />
+            <SolidColorBrush x:Key="WarningSurfaceBrush" Color="{StaticResource ColorWarningSurface}" />
+            <SolidColorBrush x:Key="WarningBorderBrush" Color="{StaticResource ColorWarningBorder}" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource ColorTextPrimary}" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource ColorTextMuted}" />
+
+            <FontFamily x:Key="DisplayFont">Bahnschrift SemiBold</FontFamily>
+            <FontFamily x:Key="BodyFont">Segoe UI Variable</FontFamily>
+            <FontFamily x:Key="NumericFont">Consolas</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

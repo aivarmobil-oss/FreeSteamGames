@@ -61,7 +61,8 @@ public partial class App : Application
         if (_settings.LaunchMode == LaunchMode.Window || forceShowWindow)
             _mainWindow.Show();
 
-        _pollingService = new PollingService(_mainViewModel, _settingsService, _settings, ShowTrayNotification);
+        var updateCheckService = new UpdateCheckService(httpClient);
+        _pollingService = new PollingService(_mainViewModel, _settingsService, _settings, updateCheckService, ShowTrayNotification);
         _ = _pollingService.RunAsync(_pollingCts.Token);
     }
 
@@ -106,7 +107,7 @@ public partial class App : Application
 
     private void ShowTrayNotification(string message)
     {
-        _trayIcon?.ShowNotification("Free Steam Games", message);
+        _trayIcon?.ShowNotification("Free Games Radar", message);
     }
 
     private void SetupTrayIcon()
@@ -115,7 +116,7 @@ public partial class App : Application
 
         _trayIcon = new TaskbarIcon
         {
-            ToolTipText = "Free Steam Games",
+            ToolTipText = "Free Games Radar",
             IconSource = new BitmapImage(new Uri("pack://application:,,,/Assets/tray.ico"))
         };
 

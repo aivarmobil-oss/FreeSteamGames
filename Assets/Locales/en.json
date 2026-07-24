@@ -25,6 +25,7 @@
     "settings_locale_more": "Show more languages…",
     "settings_restart_prompt": "Restart the app now to apply the language?",
     "notification_new_games_format": "Free right now: {0}",
-    "update_banner_title": "Update available"
+    "update_banner_title": "Update available",
+    "update_banner_download": "Download"
   }
 }

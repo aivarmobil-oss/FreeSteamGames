@@ -119,7 +119,7 @@ public partial class SettingsViewModel : ObservableObject
         _settingsService.Save(_settings);
 
         var prompt = _localizationService["settings_restart_prompt"];
-        var result = MessageBox.Show(prompt, "Free Steam Games", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        var result = MessageBox.Show(prompt, "Free Games Radar", MessageBoxButton.YesNo, MessageBoxImage.Question);
         if (result == MessageBoxResult.Yes)
             _requestRestart();
     }
@@ -149,7 +149,7 @@ public partial class SettingsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Не удалось получить список языков: {ex.Message}", "Free Steam Games");
+            MessageBox.Show($"Не удалось получить список языков: {ex.Message}", "Free Games Radar");
         }
         finally
         {
@@ -169,7 +169,7 @@ public partial class SettingsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Не удалось скачать язык: {ex.Message}", "Free Steam Games");
+            MessageBox.Show($"Не удалось скачать язык: {ex.Message}", "Free Games Radar");
         }
     }
 }

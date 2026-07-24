@@ -8,8 +8,9 @@
         xmlns:converters="clr-namespace:FreeSteamGames.Converters"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="Free Steam Games" Height="600" Width="900"
+        Title="Free Games Radar" Height="640" Width="920"
         Icon="/Assets/tray.ico"
+        Background="{StaticResource BgBrush}"
         WindowStartupLocation="CenterScreen"
         ExtendsContentIntoTitleBar="True"
         WindowBackdropType="Mica"
@@ -18,39 +19,82 @@
     <Window.Resources>
         <converters:StringToVisibilityConverter x:Key="NullToVisibilityConverter" />
 
+        <Style x:Key="GameCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform Y="0" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                                To="{StaticResource ColorSurfaceHover}" Duration="0:0:0.15" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y"
+                                                 To="-3" Duration="0:0:0.15" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                                To="{StaticResource ColorSurface}" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y"
+                                                 To="0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <DataTemplate x:Key="GameCardTemplate" DataType="{x:Type models:FreeGame}">
-            <ui:CardControl Margin="8">
-                <ui:CardControl.Icon>
-                    <ui:ImageIcon Source="{Binding HeaderImageUrl}" Width="120" Height="56" />
-                </ui:CardControl.Icon>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <Border Style="{StaticResource GameCardStyle}" Width="300" Margin="0,0,16,16">
+                <StackPanel>
+                    <Border Height="140" Background="Black" ClipToBounds="True"
+                            CornerRadius="8,8,0,0">
+                        <Image Source="{Binding HeaderImageUrl}" Stretch="UniformToFill" />
+                    </Border>
 
-                    <StackPanel Grid.Column="0" Margin="12,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
-                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                    <Rectangle Height="3" Fill="{StaticResource AccentBrush}" />
+
+                    <StackPanel Margin="14,12,14,14">
+                        <TextBlock Text="{Binding Name}" FontFamily="{StaticResource DisplayFont}"
+                                   FontSize="16" Foreground="{StaticResource TextPrimaryBrush}"
+                                   TextWrapping="Wrap" Height="44" TextTrimming="CharacterEllipsis"
+                                   VerticalAlignment="Top" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <TextBlock Text="{Binding FormattedOriginalPrice}"
+                                       FontFamily="{StaticResource NumericFont}"
                                        TextDecorations="Strikethrough"
-                                       Opacity="0.6" Margin="0,0,8,0" />
-                            <Border Background="#2E7D32" CornerRadius="4" Padding="6,1">
+                                       Foreground="{StaticResource TextMutedBrush}" Margin="0,0,10,0" />
+                            <Border Background="{StaticResource AccentDimBrush}" CornerRadius="4" Padding="7,2">
                                 <TextBlock Text="{Binding DataContext.Loc[free_badge], RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
-                                           Foreground="White" FontSize="11" FontWeight="Bold" />
+                                           Foreground="{StaticResource AccentBrush}" FontSize="11"
+                                           FontFamily="{StaticResource DisplayFont}" />
                             </Border>
-                            <TextBlock Text="{Binding TimeLeftLabel}" Opacity="0.6" Margin="8,0,0,0" />
                         </StackPanel>
-                    </StackPanel>
 
-                    <ui:Button Grid.Column="1"
-                               Content="{Binding DataContext.Loc[grab_button], RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
-                               Appearance="Primary"
-                               VerticalAlignment="Center" Margin="16,0,0,0"
-                               Command="{Binding DataContext.OpenStorePageCommand, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
-                               CommandParameter="{Binding}" />
-                </Grid>
-            </ui:CardControl>
+                        <TextBlock Text="{Binding TimeLeftLabel}" FontFamily="{StaticResource NumericFont}"
+                                   Foreground="{StaticResource TextMutedBrush}" FontSize="12"
+                                   Height="18" Margin="0,4,0,0" />
+
+                        <ui:Button Content="{Binding DataContext.Loc[grab_button], RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                                   Appearance="Primary" HorizontalAlignment="Stretch" Margin="0,12,0,0"
+                                   Command="{Binding DataContext.OpenStorePageCommand, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                                   CommandParameter="{Binding}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
         </DataTemplate>
     </Window.Resources>
 
@@ -61,27 +105,102 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0" Title="Free Steam Games" />
+        <ui:TitleBar Grid.Row="0" Title="Free Games Radar" FontFamily="{StaticResource DisplayFont}" />
 
-        <ui:InfoBar Grid.Row="1" Margin="12,0,12,0"
-                    Title="{Binding Loc[update_banner_title]}"
-                    Message="{Binding UpdateBannerMessage}"
-                    IsOpen="{Binding UpdateBannerVisible}"
-                    Severity="Warning" />
+        <Border x:Name="UpdateBanner" Grid.Row="1" Margin="16,10,16,0" Padding="16,12"
+                Background="{StaticResource WarningSurfaceBrush}"
+                BorderBrush="{StaticResource WarningBorderBrush}" BorderThickness="1" CornerRadius="8"
+                Opacity="0" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TranslateTransform Y="-8" />
+            </Border.RenderTransform>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UpdateBannerVisible}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.25" />
+                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" To="0" Duration="0:0:0.25">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.15" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" BeginTime="0:0:0.15">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Loc[update_banner_title]}" FontFamily="{StaticResource DisplayFont}"
+                               Foreground="{StaticResource WarningBrush}" />
+                    <TextBlock Text="{Binding UpdateBannerMessage}" Foreground="{StaticResource WarningBrush}"
+                               Opacity="0.85" TextWrapping="Wrap" Margin="0,3,0,0" />
+                </StackPanel>
+
+                <ui:Button Grid.Column="1" Content="{Binding Loc[update_banner_download]}"
+                           Command="{Binding OpenReleasesPageCommand}"
+                           Appearance="Primary" VerticalAlignment="Center" Margin="12,0,0,0" />
+            </Grid>
+        </Border>
 
         <Grid Grid.Row="2">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding FreeGames}"
                               ItemTemplate="{StaticResource GameCardTemplate}"
-                              Margin="12" />
+                              Margin="16">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                             From="0" To="1" Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+                </ItemsControl>
             </ScrollViewer>
 
             <TextBlock Text="{Binding StatusMessage}"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                       Opacity="0.7" FontSize="14"
+                       Foreground="{StaticResource TextMutedBrush}" FontSize="14"
                        Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}" />
 
             <ui:ProgressRing IsIndeterminate="{Binding IsLoading}"
+                              Foreground="{StaticResource AccentBrush}"
                               Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
                               HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>

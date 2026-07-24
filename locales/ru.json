@@ -25,6 +25,7 @@
     "settings_locale_more": "Показать ещё языки…",
     "settings_restart_prompt": "Перезапустить приложение сейчас, чтобы применить язык?",
     "notification_new_games_format": "Бесплатно сейчас: {0}",
-    "update_banner_title": "Доступно обновление"
+    "update_banner_title": "Доступно обновление",
+    "update_banner_download": "Скачать"
   }
 }
