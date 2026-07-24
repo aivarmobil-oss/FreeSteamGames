@@ -1,0 +1,30 @@
+{
+  "code": "ru",
+  "displayName": "Русский",
+  "steamLang": "russian",
+  "strings": {
+    "settings_region_label": "Регион Steam (валюта):",
+    "free_badge": "БЕСПЛАТНО",
+    "grab_button": "Забрать",
+    "days_left_format": "Осталось {0} дн.",
+    "hours_left_format": "Осталось {0} ч.",
+    "no_deals": "Сейчас бесплатных раздач нет. Загляните позже.",
+    "fetch_error_format": "Не удалось получить данные Steam: {0}",
+    "tray_open": "Открыть",
+    "tray_check_now": "Проверить сейчас",
+    "tray_settings": "Настройки",
+    "tray_exit": "Выход",
+    "settings_title": "Настройки",
+    "settings_autostart": "Запускать при старте Windows",
+    "settings_launch_mode_label": "Как открываться при запуске программы:",
+    "settings_launch_tray": "Тихо, свёрнуто в трей",
+    "settings_launch_window": "Развёрнутым окном",
+    "settings_notifications": "Показывать уведомления о новых бесплатных играх",
+    "settings_interval_label": "Интервал проверки (минут):",
+    "settings_locale_label": "Язык / регион:",
+    "settings_locale_more": "Показать ещё языки…",
+    "settings_restart_prompt": "Перезапустить приложение сейчас, чтобы применить язык?",
+    "notification_new_games_format": "Бесплатно сейчас: {0}",
+    "update_banner_title": "Доступно обновление"
+  }
+}

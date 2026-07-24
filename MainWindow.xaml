@@ -1,0 +1,89 @@
+<ui:FluentWindow x:Class="FreeSteamGames.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FreeSteamGames"
+        xmlns:models="clr-namespace:FreeSteamGames.Models"
+        xmlns:converters="clr-namespace:FreeSteamGames.Converters"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        mc:Ignorable="d"
+        Title="Free Steam Games" Height="600" Width="900"
+        Icon="/Assets/tray.ico"
+        WindowStartupLocation="CenterScreen"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica"
+        Closing="FluentWindow_Closing">
+
+    <Window.Resources>
+        <converters:StringToVisibilityConverter x:Key="NullToVisibilityConverter" />
+
+        <DataTemplate x:Key="GameCardTemplate" DataType="{x:Type models:FreeGame}">
+            <ui:CardControl Margin="8">
+                <ui:CardControl.Icon>
+                    <ui:ImageIcon Source="{Binding HeaderImageUrl}" Width="120" Height="56" />
+                </ui:CardControl.Icon>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="12,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <TextBlock Text="{Binding FormattedOriginalPrice}"
+                                       TextDecorations="Strikethrough"
+                                       Opacity="0.6" Margin="0,0,8,0" />
+                            <Border Background="#2E7D32" CornerRadius="4" Padding="6,1">
+                                <TextBlock Text="{Binding DataContext.Loc[free_badge], RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                                           Foreground="White" FontSize="11" FontWeight="Bold" />
+                            </Border>
+                            <TextBlock Text="{Binding TimeLeftLabel}" Opacity="0.6" Margin="8,0,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <ui:Button Grid.Column="1"
+                               Content="{Binding DataContext.Loc[grab_button], RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                               Appearance="Primary"
+                               VerticalAlignment="Center" Margin="16,0,0,0"
+                               Command="{Binding DataContext.OpenStorePageCommand, RelativeSource={RelativeSource AncestorType=ui:FluentWindow}}"
+                               CommandParameter="{Binding}" />
+                </Grid>
+            </ui:CardControl>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="Free Steam Games" />
+
+        <ui:InfoBar Grid.Row="1" Margin="12,0,12,0"
+                    Title="{Binding Loc[update_banner_title]}"
+                    Message="{Binding UpdateBannerMessage}"
+                    IsOpen="{Binding UpdateBannerVisible}"
+                    Severity="Warning" />
+
+        <Grid Grid.Row="2">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding FreeGames}"
+                              ItemTemplate="{StaticResource GameCardTemplate}"
+                              Margin="12" />
+            </ScrollViewer>
+
+            <TextBlock Text="{Binding StatusMessage}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Opacity="0.7" FontSize="14"
+                       Visibility="{Binding StatusMessage, Converter={StaticResource NullToVisibilityConverter}, FallbackValue=Collapsed}" />
+
+            <ui:ProgressRing IsIndeterminate="{Binding IsLoading}"
+                              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

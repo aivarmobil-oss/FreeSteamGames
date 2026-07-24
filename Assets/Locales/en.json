@@ -1,0 +1,30 @@
+{
+  "code": "en",
+  "displayName": "English",
+  "steamLang": "english",
+  "strings": {
+    "settings_region_label": "Steam region (currency):",
+    "free_badge": "FREE",
+    "grab_button": "Grab it",
+    "days_left_format": "{0} days left",
+    "hours_left_format": "{0} hours left",
+    "no_deals": "No free giveaways right now. Check back later.",
+    "fetch_error_format": "Could not fetch Steam data: {0}",
+    "tray_open": "Open",
+    "tray_check_now": "Check now",
+    "tray_settings": "Settings",
+    "tray_exit": "Exit",
+    "settings_title": "Settings",
+    "settings_autostart": "Start with Windows",
+    "settings_launch_mode_label": "How to open on launch:",
+    "settings_launch_tray": "Quietly, minimized to tray",
+    "settings_launch_window": "As a window",
+    "settings_notifications": "Show notifications about new free games",
+    "settings_interval_label": "Check interval (minutes):",
+    "settings_locale_label": "Language / region:",
+    "settings_locale_more": "Show more languages…",
+    "settings_restart_prompt": "Restart the app now to apply the language?",
+    "notification_new_games_format": "Free right now: {0}",
+    "update_banner_title": "Update available"
+  }
+}

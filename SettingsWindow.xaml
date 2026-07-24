@@ -1,0 +1,92 @@
+<ui:FluentWindow x:Class="FreeSteamGames.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        mc:Ignorable="d"
+        Title="Settings — Free Steam Games"
+        Width="460"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Assets/tray.ico"
+        ExtendsContentIntoTitleBar="True"
+        WindowBackdropType="Mica">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ui:TitleBar Grid.Row="0" Title="{Binding Loc[settings_title]}" />
+
+        <StackPanel Grid.Row="1" Margin="24,16,24,28">
+
+            <CheckBox Content="{Binding Loc[settings_autostart]}"
+                      IsChecked="{Binding AutoStart}" />
+
+            <Separator Margin="0,12,0,12" Opacity="0.3" />
+
+            <TextBlock Text="{Binding Loc[settings_launch_mode_label]}" Margin="0,0,0,6" FontWeight="SemiBold" />
+            <RadioButton Content="{Binding Loc[settings_launch_tray]}" GroupName="LaunchMode"
+                         IsChecked="{Binding LaunchAsWindow, Converter={StaticResource InverseBoolConverter}, Mode=OneWay}"
+                         Margin="0,0,0,8" />
+            <RadioButton x:Name="WindowModeRadio" Content="{Binding Loc[settings_launch_window]}" GroupName="LaunchMode"
+                         IsChecked="{Binding LaunchAsWindow, Mode=TwoWay}" />
+
+            <Separator Margin="0,12,0,12" Opacity="0.3" />
+
+            <CheckBox Content="{Binding Loc[settings_notifications]}"
+                      IsChecked="{Binding NotificationsEnabled}" />
+
+            <Separator Margin="0,12,0,12" Opacity="0.3" />
+
+            <TextBlock Text="{Binding Loc[settings_interval_label]}" Margin="0,0,0,6" FontWeight="SemiBold" />
+            <ui:NumberBox Value="{Binding IntervalMinutes}" Minimum="5" Maximum="1440"
+                          HorizontalAlignment="Left" Width="160" />
+
+            <Separator Margin="0,12,0,12" Opacity="0.3" />
+
+            <TextBlock Text="{Binding Loc[settings_locale_label]}" Margin="0,0,0,6" FontWeight="SemiBold" />
+            <ComboBox ItemsSource="{Binding InstalledLocales}"
+                      SelectedItem="{Binding SelectedLocale}"
+                      DisplayMemberPath="DisplayName"
+                      HorizontalAlignment="Stretch" Margin="0,0,0,8" />
+
+            <ui:Button Content="{Binding Loc[settings_locale_more]}"
+                       Command="{Binding LoadMoreLocalesCommand}"
+                       Appearance="Secondary" HorizontalAlignment="Left" />
+
+            <ItemsControl ItemsSource="{Binding MoreLocales}" Margin="0,8,0,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,4,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" />
+                            <ui:Button Grid.Column="1" Content="⭳"
+                                       Command="{Binding DataContext.DownloadLocaleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                       CommandParameter="{Binding}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ui:ProgressRing IsIndeterminate="{Binding IsLoadingMoreLocales}"
+                              Visibility="{Binding IsLoadingMoreLocales, Converter={StaticResource BoolToVisibilityConverter}}"
+                              HorizontalAlignment="Left" Height="20" Width="20" Margin="0,8,0,0" />
+
+            <Separator Margin="0,12,0,12" Opacity="0.3" />
+
+            <TextBlock Text="{Binding Loc[settings_region_label]}" Margin="0,0,0,6" FontWeight="SemiBold" />
+            <ComboBox ItemsSource="{Binding AvailableRegions}"
+                      SelectedItem="{Binding SelectedRegion}"
+                      DisplayMemberPath="DisplayName"
+                      HorizontalAlignment="Stretch" />
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>
